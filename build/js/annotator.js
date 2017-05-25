@@ -15,42 +15,42 @@ var Annotation = (function Annotation() {
         note: null,
         tags: [],
 
-        init: function(obj) {
-            if(!obj) return;
+        init: function (obj) {
+            if (!obj) return;
 
-            if(obj.annotator) {
+            if (obj.annotator) {
                 this.annotator = obj.annotator;
             }
-            if(obj.selectedRange) {
+            if (obj.selectedRange) {
                 this.saveSelection(obj.selectedRange);
-            } else if(obj.savedAnnotation) {
+            } else if (obj.savedAnnotation) {
                 var savedAnnotation = obj.savedAnnotation;
 
-                this.range          = savedAnnotation.range;
-                this.id             = savedAnnotation.id;
-                this.selectedText   = savedAnnotation.selectedText;
-                this.color          = savedAnnotation.color;
-                this.note           = savedAnnotation.note;
-                this.tags           = savedAnnotation.tags;
+                this.range = savedAnnotation.range;
+                this.id = savedAnnotation.id;
+                this.selectedText = savedAnnotation.selectedText;
+                this.color = savedAnnotation.color;
+                this.note = savedAnnotation.note;
+                this.tags = savedAnnotation.tags;
             }
 
             this.setRangeElements();
 
         },
 
-        setRangeElements: function() {
+        setRangeElements: function () {
             this.$parentContainer = $(this.annotator.findElementByXPath(this.range.parentContainerXPath));
             this.$startContainer = $(this.annotator.findElementByXPath(this.range.startContainerXPath));
             this.$endContainer = $(this.annotator.findElementByXPath(this.range.endContainerXPath));
 
         },
 
-        render: function(opts) {
-            if(opts && opts.temporary) {
+        render: function (opts) {
+            if (opts && opts.temporary) {
                 this.wrapNodes(true);
-            } else if(opts && opts.convert) {
+            } else if (opts && opts.convert) {
                 this.convertFromTemporary();
-            } else if(opts && opts.update) {
+            } else if (opts && opts.update) {
                 this.updateAnnotation();
             } else {
                 this.wrapNodes();
@@ -65,11 +65,11 @@ var Annotation = (function Annotation() {
             }
         },
 
-        updateAnnotation: function() {
+        updateAnnotation: function () {
             var $parentContainer = this.$parentContainer;
- 
+
             var renderedAnnotation = $parentContainer
-                                        .find(".annotation[data-id='" + this.id + "']");
+                .find(".annotation[data-id='" + this.id + "']");
 
             renderedAnnotation.removeClass("annotation");
 
@@ -80,7 +80,7 @@ var Annotation = (function Annotation() {
                 .removeAttr("style");
         },
 
-        saveSelection: function(range) {
+        saveSelection: function (range) {
             var parentContainer = range.commonAncestorContainer;
             var startContainer = range.startContainer;
             var endContainer = range.endContainer;
@@ -95,15 +95,15 @@ var Annotation = (function Annotation() {
             var nodesBetweenStart = this.getNodesToWrap(parentNode, startNode.firstChild, startContainer);
             var nodesBetweenEnd = this.getNodesToWrap(parentNode, endNode.firstChild, endContainer);
 
-            if(nodesBetweenStart.length) {
-                for(var i = 0; i < nodesBetweenStart.length; i++) {
+            if (nodesBetweenStart.length) {
+                for (var i = 0; i < nodesBetweenStart.length; i++) {
                     var characterLength = nodesBetweenStart[i].nodeValue.length;
                     startOffset += characterLength;
                 }
             }
 
-            if(nodesBetweenEnd.length) {
-                for(var i = 0; i < nodesBetweenEnd.length; i++) {
+            if (nodesBetweenEnd.length) {
+                for (var i = 0; i < nodesBetweenEnd.length; i++) {
                     endOffset += nodesBetweenEnd[i].nodeValue.length;
                 }
             }
@@ -122,71 +122,71 @@ var Annotation = (function Annotation() {
             this.selectedText = selectedContent;
         },
 
-        getSelectionContent: function(range) {
+        getSelectionContent: function (range) {
             var container = document.createElement("div");
             container.appendChild(range.cloneContents());
             var text = container.textContent;
             return text;
         },
 
-        getParentNodeFor: function(node) {
+        getParentNodeFor: function (node) {
 
-            while(node.nodeType != 1 || (node.nodeType == 1 && node.classList.contains("js-no-select")) ) {
+            while (node.nodeType != 1 || (node.nodeType == 1 && node.classList.contains("js-no-select"))) {
                 node = node.parentNode;
             }
 
             return node;
         },
 
-        generateRandomID: function() {
+        generateRandomID: function () {
             return 'annotation-' + new Date().getTime();
         },
 
-        save: function(obj) {
-            if(!obj) return;
+        save: function (obj) {
+            if (!obj) return;
 
             this.color = obj.color;
 
-            if(obj.note)
+            if (obj.note)
                 this.note = obj.note;
 
-            if(obj.tags && obj.tags.length) {
+            if (obj.tags && obj.tags.length) {
                 this.tags = obj.tags
             }
 
             var data = this.serialize();
 
-            if(obj && obj.debug) {
+            if (obj && obj.debug) {
                 void 0;
             } else {
                 this.postToRemote();
             }
 
-            if(obj && obj.cbk) obj.cbk(this);
+            if (obj && obj.cbk) obj.cbk(this);
 
         },
 
         // TODO
-        destroy: function(cbk) {
-            if(cbk) cbk();
+        destroy: function (cbk) {
+            if (cbk) cbk();
         },
 
         // TODO
-        postToRemote: function() {
+        postToRemote: function () {
             void 0;
         },
 
-        serialize: function() {
+        serialize: function () {
             var range = this.range;
             return {
-                 range: {
+                range: {
                     startOffset: range.startOffset,
                     endOffset: range.endOffset,
                     startContainerXPath: range.startContainerXPath,
                     endContainerXPath: range.endContainerXPath,
                     parentContainerXPath: range.parentContainerXPath
                 },
-                id:  this.id,
+                id: this.id,
                 selectedText: this.selectedText,
                 color: this.color,
                 note: this.note,
@@ -194,18 +194,18 @@ var Annotation = (function Annotation() {
             }
         },
 
-        getContainedNodes: function() {
+        getContainedNodes: function () {
             var range, startContainer, endContainer, parentContainer;
             var nodes = [];
 
             range = this.range;
-            
+
             parentContainer = this.$parentContainer.get(0);
             startContainer = this.$startContainer.get(0);
             endContainer = this.$endContainer.get(0);
 
             var startTextNodeParams = this.getTextNodeAtOffset(startContainer, range.startOffset);
-                endTextNodeParams = this.getTextNodeAtOffset(endContainer, range.endOffset);
+            endTextNodeParams = this.getTextNodeAtOffset(endContainer, range.endOffset);
 
             var startTextNode = startTextNodeParams[0],
                 startOffset = startTextNodeParams[1],
@@ -213,19 +213,19 @@ var Annotation = (function Annotation() {
                 endOffset = endTextNodeParams[1];
 
 
-            if(startTextNode == endTextNode) {
+            if (startTextNode == endTextNode) {
                 var startTextNodeSplit = startTextNode.splitText(startOffset);
-                var endTextNodeSplit = startTextNodeSplit.splitText(endOffset - startOffset);    
+                var endTextNodeSplit = startTextNodeSplit.splitText(endOffset - startOffset);
             } else {
                 var startTextNodeSplit = startTextNode.splitText(startOffset);
-                var endTextNodeSplit = endTextNode.splitText(endOffset);    
+                var endTextNodeSplit = endTextNode.splitText(endOffset);
             }
 
 
             var innerNodes = this.getNodesToWrap(parentContainer, startTextNodeSplit, endTextNodeSplit);
 
 
-            for(var i = 0; i < innerNodes.length; i++) {
+            for (var i = 0; i < innerNodes.length; i++) {
                 nodes.push(innerNodes[i]);
             }
 
@@ -233,22 +233,22 @@ var Annotation = (function Annotation() {
         },
 
 
-        getTextNodeAtOffset: function(rootNode, offset) {
+        getTextNodeAtOffset: function (rootNode, offset) {
             var textNode,
-            count = 0,
-            found = false;
+                count = 0,
+                found = false;
 
             function getTextNodes(node) {
                 if (node.nodeType == Node.TEXT_NODE && !/^\s*$/.test(node.nodeValue)) {
-                    if ( found != true) {
-                        if(count+node.nodeValue.length >= offset) {
+                    if (found != true) {
+                        if (count + node.nodeValue.length >= offset) {
                             textNode = node;
-                            found = true;    
+                            found = true;
                         } else {
                             count += node.nodeValue.length
                         }
                     }
-                } else if (node.nodeType == Node.ELEMENT_NODE ) {
+                } else if (node.nodeType == Node.ELEMENT_NODE) {
                     for (var i = 0, len = node.childNodes.length; i < len; ++i) {
                         getTextNodes(node.childNodes[i]);
                     }
@@ -260,22 +260,22 @@ var Annotation = (function Annotation() {
 
         },
 
-        getNodesToWrap: function(rootNode, startNode, endNode) {
+        getNodesToWrap: function (rootNode, startNode, endNode) {
             var pastStartNode = false, reachedEndNode = false, textNodes = [];
 
             function getTextNodes(node) {
 
                 if (node == startNode) {
                     pastStartNode = true;
-                } 
+                }
                 if (node == endNode) {
                     reachedEndNode = true;
                 } else if (node.nodeType == Node.TEXT_NODE) {
                     if (pastStartNode && !reachedEndNode && !/^\s*$/.test(node.nodeValue)) {
                         textNodes.push(node);
                     }
-                } else if (node.nodeType == Node.ELEMENT_NODE ) {
-                    
+                } else if (node.nodeType == Node.ELEMENT_NODE) {
+
                     for (var i = 0, len = node.childNodes.length; !reachedEndNode && i < len; ++i) {
                         getTextNodes(node.childNodes[i]);
                     }
@@ -287,20 +287,20 @@ var Annotation = (function Annotation() {
         },
 
 
-        wrapNodes: function(temporary) {
+        wrapNodes: function (temporary) {
             var nodes = this.getContainedNodes();
             var newNode = this.createWrapperElement(temporary)
-            for(var i = 0; i < nodes.length; i++) {
+            for (var i = 0; i < nodes.length; i++) {
                 $(nodes[i]).wrap(newNode);
             }
         },
 
-        createWrapperElement: function(temporary) {
+        createWrapperElement: function (temporary) {
             var annotationID = this.id;
 
             var span = document.createElement("span");
 
-            if(!temporary) {
+            if (!temporary) {
                 span.classList.add("annotation");
                 span.classList.add(this.color);
             } else {
@@ -312,22 +312,22 @@ var Annotation = (function Annotation() {
             return span;
         },
 
-        removeTemporary: function() {
+        removeTemporary: function () {
             var temporary = this.$parentContainer.find(".temporary");
 
-            for(var i = 0; i < temporary.length; i++) {
+            for (var i = 0; i < temporary.length; i++) {
                 var elem = temporary[i];
                 $(elem.childNodes[0]).unwrap();
             }
         },
 
-        convertFromTemporary: function() {
+        convertFromTemporary: function () {
             var temporary = this.$parentContainer.find(".temporary");
 
             temporary
-            .removeClass("temporary")
-            .addClass("annotation")
-            .addClass(this.color);
+                .removeClass("temporary")
+                .addClass("annotation")
+                .addClass(this.color);
 
         }
 
@@ -372,7 +372,7 @@ var Editor = (function Editor() {
             }
         ],
 
-        init: function(opts) {
+        init: function (opts) {
             this.annotator = opts.annotator;
             var $containerElement = $("body");
             this.$popoverElement = $(this.renderEditorTemplate());
@@ -380,86 +380,88 @@ var Editor = (function Editor() {
             $containerElement.append(this.$popoverElement);
 
             // autocomplete
-            if(Awesomplete){
+            if (Awesomplete) {
                 this._awesomplete = new Awesomplete(this.$popoverElement.find(".js-tags-field")[0]);
             }
 
-            this.events.forEach(function(eventMap) {
+            this.events.forEach(function (eventMap) {
                 var editor = this;
-                this.$popoverElement.on(eventMap["event"], eventMap["selector"], function(e) {
+                this.$popoverElement.on(eventMap["event"], eventMap["selector"], function (e) {
                     e.preventDefault();
                     editor[eventMap["action"]].call(editor, e);
                 })
             }, this);
         },
 
-        renderEditorTemplate: function() {
-            var html =  '<div id="annotation-editor">'
-                     +      '<ul class="dropdown-list">'
-                     +          '<li class="colors">'
-                     ;
+        renderEditorTemplate: function () {
+            var html = '<div id="annotation-editor">'
+                + '<ul class="dropdown-list">'
+                + '<li class="colors">'
+            ;
 
-            this.annotator.colors.forEach(function(color, index) {
+            this.annotator.colors.forEach(function (color, index) {
                 var className = 'js-color-picker color'
-                              + ' ' + color.className 
-                              + ' ' + (index == 0 ? 'active' : '')
-                    ;
+                    + ' ' + color.className
+                    + ' ' + (index == 0 ? 'active' : '')
+                ;
                 html += '<span data-color="' + color.className + '" class="' + className + '"></span>';
             });
 
             html += '</li>'
-                 +  '<li class="note-input">'
-                 +      '<form class="js-note-form">'
-                 +          '<input type="text" class="js-tags-field" placeholder="#revision, #later">' 
-                 +          '<textarea class="js-note-field" placeholder="Add a note..."></textarea>'
-                 +          '<input type="submit" id="add-button" value="Add Note" />'
-                 +      '</form>'
-                 +  '</li>'
-                 +  '<li><a href="#" class="js-copy">Copy</a></li>'
-                 +  '<li><span class="link">Share</span>'
-                 +      '<ul class="dropdown-list sub-list">'
-                 +          '<li class="js-facebook-share"><a href="#" class="js-share facebook">Facebook</a></li>'
-                 +          '<li><a href="#" class="js-share twitter">Twitter</a></li>'
-                 +      '</ul>'
-                 +   '</li>'
-                 +   '<li class="js-remove-annotation-wrapper"><a href="#" class="js-remove-annotation">Remove Highlight</a></li>'
-                 +   '</ul>'
-                 + '</div>'
+                + '<li class="note-input">'
+                + '<form class="js-note-form">'
+                + '<input type="text" class="js-tags-field" placeholder="#revision, #later">'
+                + '<textarea class="js-note-field" placeholder="Add a note..."></textarea>'
+                + '<input type="submit" id="add-button" value="Add Note" />'
+                + '</form>'
+                + '</li>'
+                + '<li><a href="#" class="js-copy">Copy</a></li>'
+                + '<li><span class="link">Share</span>'
+                + '<ul class="dropdown-list sub-list">'
+                + '<li class="js-facebook-share"><a href="#" class="js-share facebook">Facebook</a></li>'
+                + '<li><a href="#" class="js-share twitter">Twitter</a></li>'
+                + '</ul>'
+                + '</li>'
+                + '<li class="js-remove-annotation-wrapper"><a href="#" class="js-remove-annotation">Remove Highlight</a></li>'
+                + '</ul>'
+                + '</div>'
             ;
 
             return html;
         },
 
-        showEditor: function(opts) {
+        showEditor: function (opts) {
             var $popover = this.$popoverElement;
 
             var position = opts.position,
-            annotation = opts.annotation,
-            temporary = opts.temporary;
+                annotation = opts.annotation,
+                temporary = opts.temporary;
 
             var top = position.top - 30;
-            var left = position.left - this.$popoverElement.width()/2;
+            var left = position.left - this.$popoverElement.width() / 2;
 
-            if(annotation) {
+            if (annotation) {
                 this.annotation = annotation;
                 this.activateAnnotationColor();
                 this.renderContents();
 
-                if(!temporary) {
+                if (!temporary) {
                     this.showRemoveBtn();
                 }
             }
 
             // FB Share
-            if( !(window.FB) ) this.$popoverElement.find(".js-facebook-share").hide();
-            else { this.$popoverElement.find(".js-facebook-share").show(); }
-
-
-            if(temporary) {
-                this.annotation.render({ temporary: true });
+            if (!(window.FB)) this.$popoverElement.find(".js-facebook-share").hide();
+            else {
+                this.$popoverElement.find(".js-facebook-share").show();
             }
 
-            if(this._awesomplete) {
+
+            if (temporary) {
+                this.annotation.render({temporary: true});
+            }
+
+            if (this._awesomplete) {
                 this._awesomplete.list = this.annotator.tags;
             }
 
@@ -467,11 +469,11 @@ var Editor = (function Editor() {
             $popover.find("#annotation-input").focus();
         },
 
-        isVisible: function() {
+        isVisible: function () {
             return this.$popoverElement.is(":visible");
         },
 
-        reset: function() {
+        reset: function () {
             this.annotation.removeTemporary();
             this.resetNoteForm();
             this.hideRemoveBtn();
@@ -479,11 +481,11 @@ var Editor = (function Editor() {
             this.$popoverElement.removeAttr("style");
         },
 
-        resetNoteForm: function() {
+        resetNoteForm: function () {
             this.$popoverElement.find(".js-note-field, .js-tags-field").val("");
         },
 
-        activateAnnotationColor: function() {
+        activateAnnotationColor: function () {
             this.$popoverElement
                 .find(".js-color-picker.active").removeClass("active");
             this.$popoverElement
@@ -491,37 +493,37 @@ var Editor = (function Editor() {
                 .addClass("active");
         },
 
-        renderContents: function() {
+        renderContents: function () {
             this.$popoverElement.find(".js-note-field").val(this.annotation.note);
 
-            if(this.annotation.tags)
+            if (this.annotation.tags)
                 this.$popoverElement.find(".js-tags-field").val(this.annotation.tags.join(", "));
         },
 
-        showRemoveBtn: function() {
+        showRemoveBtn: function () {
             this.$popoverElement.find(".js-remove-annotation-wrapper").show();
         },
 
-        hideRemoveBtn: function() {
+        hideRemoveBtn: function () {
             this.$popoverElement.find(".js-remove-annotation-wrapper").hide();
         },
 
-        hideEditor: function(event) {
+        hideEditor: function (event) {
             this.reset();
             this.$popoverElement.hide();
         },
 
-        getTagsFromString: function(string) {
+        getTagsFromString: function (string) {
             var tags = string
-                        .split(this.annotator.tagRegex)
-                        .map(function(tag) {
-                            var t = $.trim(tag);
-                            if(t.length) return t;
-                        });
+                .split(this.annotator.tagRegex)
+                .map(function (tag) {
+                    var t = $.trim(tag);
+                    if (t.length) return t;
+                });
             return tags;
         },
 
-        setColor: function(e) {
+        setColor: function (e) {
             var $target = $(e.target);
             var color = $target.data("color");
             var $form = this.$popoverElement.find(".js-note-form");
@@ -529,48 +531,47 @@ var Editor = (function Editor() {
             var note = $form.find(".js-note-field").val();
             var tags = this.getTagsFromString($form.find(".js-tags-field").val());
 
-            this.saveAndClose({ color: color, note: note, tags: tags });
+            this.saveAndClose({color: color, note: note, tags: tags});
         },
 
-        addNote: function(e) {
+        addNote: function (e) {
             var $form = $(e.target);
             var note = $form.find(".js-note-field").val();
             var tags = this.getTagsFromString($form.find(".js-tags-field").val());
             var color = this.annotation.color || this.annotator.defaultColor;
 
-            this.saveAndClose({ color: color, note: note, tags: tags });
+            this.saveAndClose({color: color, note: note, tags: tags});
         },
 
-        saveAndClose: function(data) {
-            if(!data) return;
+        saveAndClose: function (data) {
+            if (!data) return;
 
             var params = {
                 debug: this.annotator.debug,
-                cbk: function(annotation) {
-                    if(!this.annotator.findAnnotation(annotation.id)) {
-                        this.annotation.render({ convert: true });
+                cbk: function (annotation) {
+                    if (!this.annotator.findAnnotation(annotation.id)) {
+                        this.annotation.render({convert: true});
                         this.annotator.annotations.push(annotation);
                     } else {
                         this.annotator.updateAnnotation(annotation.id, annotation);
-                        this.annotation.render({ update: true });
+                        this.annotation.render({update: true});
                     }
 
                     // save tags to global list
                     this.annotator.addTags(annotation.tags);
 
-                    if(this.annotator.debug)
+                    if (this.annotator.debug)
                         this.saveToLocalStorage();
 
                     this.hideEditor();
                 }.bind(this)
             }
-
             $.extend(params, data);
             void 0;
             this.annotation.save(params);
         },
 
-        copyToClipboard: function() {
+        copyToClipboard: function () {
             var text = this.annotation.selectedText;
 
             var textarea = $("<textarea class='js-hidden-textarea'></textarea>");
@@ -579,7 +580,7 @@ var Editor = (function Editor() {
 
             try {
                 document.execCommand("copy");
-            } catch(e) {
+            } catch (e) {
                 void 0;
             }
 
@@ -587,43 +588,43 @@ var Editor = (function Editor() {
             textarea.remove();
         },
 
-        truncate: function(str, limit) {
+        truncate: function (str, limit) {
 
-            if(str.length <= limit) return str;
+            if (str.length <= limit) return str;
 
-            while(str.length >= limit) {
+            while (str.length >= limit) {
                 str = str.substr(0, str.lastIndexOf(" "));
             }
 
             return str + "...";
         },
 
-        removeAnnotation: function() {
+        removeAnnotation: function () {
             var annotation = this.annotation;
             var annotator = this.annotator;
 
 
-            if(!annotation) return;
+            if (!annotation) return;
 
             var renderedAnnotation = $(this.annotator.containerElement)
-                                        .find(".annotation[data-id='" + annotation.id + "']");
+                .find(".annotation[data-id='" + annotation.id + "']");
 
-            this.annotation.destroy(function() {
+            this.annotation.destroy(function () {
                 annotator.removeAnnotation(annotation.id);
                 renderedAnnotation.contents().unwrap();
             });
 
-            if(this.annotator.debug)
+            if (this.annotator.debug)
                 this.saveToLocalStorage();
             this.hideEditor();
         },
 
-        share: function(e) {
+        share: function (e) {
             var text = this.annotation.selectedText;
             var $target = $(e.target);
 
-            if($target.hasClass("facebook")) {
-                if( !(FB && FB.ui) ) return;
+            if ($target.hasClass("facebook")) {
+                if (!(FB && FB.ui)) return;
                 void 0;
                 FB.ui(
                     {
@@ -632,7 +633,7 @@ var Editor = (function Editor() {
                         description: text,
                         display: "popup"
                     },
-                    function(response) {
+                    function (response) {
                         if (response && !response.error_code) {
                             void 0;
                         } else {
@@ -641,33 +642,33 @@ var Editor = (function Editor() {
                     }
                 );
 
-            } else if($target.hasClass("twitter")) {
-                var width  = 575,
-                height = 400,
-                left   = ($(window).width()  - width)  / 2,
-                top    = ($(window).height() - height) / 2,
-                opts   = 'status=1' +
-                         ',width='  + width  +
-                         ',height=' + height +
-                         ',top='    + top    +
-                         ',left='   + left,
-                textLimit = 140 - '...'.length - window.location.href.length,
-                windowURL = "http://twitter.com/share?text=" + window.encodeURIComponent( this.truncate(text, textLimit) || "");
+            } else if ($target.hasClass("twitter")) {
+                var width = 575,
+                    height = 400,
+                    left = ($(window).width() - width) / 2,
+                    top = ($(window).height() - height) / 2,
+                    opts = 'status=1' +
+                        ',width=' + width +
+                        ',height=' + height +
+                        ',top=' + top +
+                        ',left=' + left,
+                    textLimit = 140 - '...'.length - window.location.href.length,
+                    windowURL = "http://twitter.com/share?text=" + window.encodeURIComponent(this.truncate(text, textLimit) || "");
 
                 window.open(windowURL, 'Share', opts);
-            } 
+            }
 
             this.hideEditor();
 
         },
 
-        saveToLocalStorage: function() {
+        saveToLocalStorage: function () {
             // save to localStorage
-            if(window.localStorage) {
-                var serializedAnnotations = this.annotator.annotations.map(function(annotation) {
+            if (window.localStorage) {
+                var serializedAnnotations = this.annotator.annotations.map(function (annotation) {
                     return annotation.serialize();
                 });
-
+                console.log('data save', JSON.stringify(serializedAnnotations));
                 window.localStorage.setItem("annotations", JSON.stringify(serializedAnnotations));
             }
         }
@@ -707,75 +708,79 @@ var Annotator = (function Annotator() {
         tags: [],
 
 
-        init: function(opts) {
+        init: function (opts) {
             this.containerElement = opts.containerElement || "body";
             this.debug = opts.debug || "true";
             this.remoteURL = opts.remoteURL || "";
 
-            if(opts.existingTags) {
+            if (opts.existingTags) {
                 this.tags = opts.existingTags;
             }
 
-            if(opts.colors) {
+            if (opts.colors) {
                 this.colors = opts.colors;
             }
 
-            if(opts.annotations) {
+            if (opts.annotations) {
                 this.renderExistingAnnotations(opts.annotations);
             }
 
             // Setup editor
             var editor = Object.create(Editor);
-            editor.init({ annotator: this });
+            editor.init({annotator: this});
             this.setEditor(editor);
         },
 
-        addTags: function(tags) {
+        addTags: function (tags) {
             this.tags = this.tags.concat(tags);
         },
 
-        setEditor: function(editor) {
+        setEditor: function (editor) {
             this.editor = editor;
         },
 
-        findAnnotation: function(annotationID) {
-            return this.annotations.filter(function(annotation) {
+        findAnnotation: function (annotationID) {
+            return this.annotations.filter(function (annotation) {
                 return annotation.id == annotationID;
             })[0];
         },
 
-        updateAnnotation: function(annotationID, newAnnotation) {
-            var index = this.annotations.map(function(i) { return i.id }).indexOf(annotationID);
-            if(index <= -1) return;
+        updateAnnotation: function (annotationID, newAnnotation) {
+            var index = this.annotations.map(function (i) {
+                return i.id
+            }).indexOf(annotationID);
+            if (index <= -1) return;
             this.annotations[index] = newAnnotation;
         },
 
-        removeAnnotation: function(annotationID) {
-            var index = this.annotations.map(function(i) { return i.id }).indexOf(annotationID);
-            if(index <= -1) return;
+        removeAnnotation: function (annotationID) {
+            var index = this.annotations.map(function (i) {
+                return i.id
+            }).indexOf(annotationID);
+            if (index <= -1) return;
 
             this.annotations.splice(index, 1);
         },
 
-        renderExistingAnnotations: function(annotations) {
-            for(var i = 0; i < annotations.length; i++) {
+        renderExistingAnnotations: function (annotations) {
+            for (var i = 0; i < annotations.length; i++) {
                 var annotation = Object.create(Annotation);
-                annotation.init({ savedAnnotation: annotations[i], annotator: this });
+                annotation.init({savedAnnotation: annotations[i], annotator: this});
                 annotation.render();
                 this.annotations.push(annotation);
             }
         },
 
 
-        handleAnnotationClick: function(e) {
+        handleAnnotationClick: function (e) {
             var $target = $(e.target);
             var annotationID = $target.data("id");
             var annotation = this.findAnnotation(annotationID);
 
-            if(!annotation) return;
+            if (!annotation) return;
 
             this.editor.showEditor({
-                position:  {
+                position: {
                     top: e.pageY,
                     left: e.pageX
                 },
@@ -784,21 +789,22 @@ var Annotator = (function Annotator() {
 
         },
 
-        handleAnnotation: function(e) {
+        handleAnnotation: function (e) {
             var selection = window.getSelection();
             var selectedText;
-            if(selection.text) {
+            if (selection.text) {
                 selectedText = selection.text;
             } else {
                 selectedText = selection.toString();
-            };
+            }
+            ;
 
 
-            if(selection && !selection.isCollapsed && selectedText && selectedText.length>5) {
+            if (selection && !selection.isCollapsed && selectedText && selectedText.length > 5) {
                 var range = selection.getRangeAt(0);
 
                 var annotation = Object.create(Annotation);
-                annotation.init({ selectedRange: range, annotator: this });
+                annotation.init({selectedRange: range, annotator: this});
 
                 var position = {
                     top: e.pageY,
@@ -816,70 +822,73 @@ var Annotator = (function Annotator() {
             }
         },
 
-        startListening: function() {
+        startListening: function () {
             var $element = $(this.containerElement);
             var self = this;
 
 
-            $element.on("mouseup touchend", function(e) {
+            $element.on("mouseup touchend", function (e) {
                 e.preventDefault();
                 e.stopPropagation();
 
                 var $target = $(e.target);
 
-                if(self.editor.isVisible() && !$target.parents("#annotation-editor").length && !$target.hasClass("annotation")) {
+                if (self.editor.isVisible() && !$target.parents("#annotation-editor").length && !$target.hasClass("annotation")) {
                     // editor is open but clicked outside
                     self.editor.hideEditor()
                 }
 
-   
-                if(!$target.parents(".js-no-select").length) {
+
+                if (!$target.parents(".js-no-select").length) {
                     self.handleAnnotation(e);
                 }
             });
 
-            $element.on("click", ".annotation", function(e) {
+            $element.on("click", ".annotation", function (e) {
                 e.stopPropagation();
                 self.handleAnnotationClick(e);
             });
 
         },
 
-        findElementByXPath: function(path) {
-            var evaluator = new XPathEvaluator(); 
-            var result = evaluator.evaluate(path, document.querySelector(this.containerElement), null,XPathResult.FIRST_ORDERED_NODE_TYPE, null); 
-            return  result.singleNodeValue; 
+        findElementByXPath: function (path) {
+            var evaluator = new XPathEvaluator();
+            var result = evaluator.evaluate(path, document.querySelector(this.containerElement), null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+            return result.singleNodeValue;
         },
 
-        createXPathFromElement: function(elm) {
-            var allNodes = document.getElementsByTagName('*'); 
+        createXPathFromElement: function (elm) {
+            var allNodes = document.getElementsByTagName('*');
 
-            for (var segs = []; elm && elm.nodeType == 1 && elm != document.querySelector(this.containerElement).parentNode; elm = elm.parentNode) { 
-                if (elm.hasAttribute('id')) { 
-                    var uniqueIdCount = 0; 
-                    for (var n=0;n < allNodes.length;n++) { 
-                        if (allNodes[n].hasAttribute('id') && allNodes[n].id == elm.id) uniqueIdCount++; 
-                        if (uniqueIdCount > 1) break; 
-                    }; 
+            for (var segs = []; elm && elm.nodeType == 1 && elm != document.querySelector(this.containerElement).parentNode; elm = elm.parentNode) {
+                if (elm.hasAttribute('id')) {
+                    var uniqueIdCount = 0;
+                    for (var n = 0; n < allNodes.length; n++) {
+                        if (allNodes[n].hasAttribute('id') && allNodes[n].id == elm.id) uniqueIdCount++;
+                        if (uniqueIdCount > 1) break;
+                    }
+                    ;
 
-                    if ( uniqueIdCount == 1) { 
-                        segs.unshift('id("' + elm.getAttribute('id') + '")'); 
-                        return segs.join('/'); 
-                    } else { 
-                        segs.unshift(elm.localName.toLowerCase() + '[@id="' + elm.getAttribute('id') + '"]'); 
-                    } 
+                    if (uniqueIdCount == 1) {
+                        segs.unshift('id("' + elm.getAttribute('id') + '")');
+                        return segs.join('/');
+                    } else {
+                        segs.unshift(elm.localName.toLowerCase() + '[@id="' + elm.getAttribute('id') + '"]');
+                    }
 
-                } else if (elm.hasAttribute('class')) { 
-                    segs.unshift(elm.localName.toLowerCase() + '[@class="' + elm.getAttribute('class') + '"]'); 
-                } else { 
-                    for (i = 1, sib = elm.previousSibling; sib; sib = sib.previousSibling) { 
-                        if (sib.localName == elm.localName)  i++; 
-                    }; 
-                    segs.unshift(elm.localName.toLowerCase() + '[' + i + ']'); 
-                }; 
-            } 
+                } else if (elm.hasAttribute('class')) {
+                    segs.unshift(elm.localName.toLowerCase() + '[@class="' + elm.getAttribute('class') + '"]');
+                } else {
+                    for (i = 1, sib = elm.previousSibling; sib; sib = sib.previousSibling) {
+                        if (sib.localName == elm.localName) i++;
+                    }
+                    ;
+                    segs.unshift(elm.localName.toLowerCase() + '[' + i + ']');
+                }
+                ;
+            }
 
-            return segs.length ? '' + segs.join('/') : null; 
+            return segs.length ? '' + segs.join('/') : null;
         }
 
     };

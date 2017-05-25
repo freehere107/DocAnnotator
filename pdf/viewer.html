@@ -13,9 +13,6 @@
     <link rel="stylesheet" href="../build/css/style.css">
     <link rel="stylesheet" href="../build/css/awesomplete.css">
     <link rel="stylesheet" href="../build/css/annotator.css">
-    <script src="l10n.js"></script>
-    <script src="../build/pdf.js"></script>
-    <script src="viewer.js"></script>
 
 </head>
 
@@ -254,7 +251,10 @@
         </menu>
 
         <div id="viewerContainer" tabindex="0">
-            <div id="viewer book" class="pdfViewer highlightable"></div>
+
+            <div id="viewer" class="pdfViewer highlightable">
+
+            </div>
         </div>
 
         <div id="errorWrapper" hidden='true'>
@@ -374,13 +374,16 @@
 </div> <!-- outerContainer -->
 <div id="printContainer"></div>
 </body>
+</html>
+<script src="l10n.js"></script>
+<script src="../build/pdf.js"></script>
+<script src="viewer.js"></script>
 <script src="../build/js/jquery.min.js"></script>
 <script src="../build/js/vendor/awesomplete.min.js"></script>
-
 <script src="../build/js/annotation.js"></script>
 <script src="../build/js/editor.js"></script>
 <script src="../build/js/annotator.js"></script>
-
 <script src="../build/js/app.js"></script>
-</html>
+<script>
 
+</script>

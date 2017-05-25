@@ -1,5 +1,4 @@
-jQuery(document).ready(function($) {
-
+jQuery(document).ready(function ($) {
     // Existing tags for the user.
     // Ideally it should come from the server
     var tags = [
@@ -10,7 +9,7 @@ jQuery(document).ready(function($) {
         "exam"
     ];
 
-    var defaultAnnotations =  [
+    var defaultAnnotations = [
         {
             range: {
                 startOffset: 28,
@@ -54,11 +53,11 @@ jQuery(document).ready(function($) {
         }
     ];
 
-    var annotations = (function() {
-        if(window.localStorage) {
+    var annotations = (function () {
+        if (window.localStorage) {
             var annotations = JSON.parse(localStorage.getItem("annotations"));
 
-            if( !annotations || annotations.length == 0 ) {
+            if (!annotations || annotations.length == 0) {
                 window.localStorage.setItem("annotations", JSON.stringify(defaultAnnotations));
                 return defaultAnnotations;
             }
@@ -70,29 +69,30 @@ jQuery(document).ready(function($) {
 
     var colors = [
         {
-            className: "yellow",
+            className: "yellow"
         },
 
         {
-            className: "green",
+            className: "green"
         },
 
         {
-            className: "pink",
+            className: "pink"
         },
 
         {
-            className: "blue",
-        },
-    ]
-
+            className: "blue"
+        }
+    ];
     var annotator = Object.create(Annotator);
-    annotator.init({
-        containerElement: "#book",
-        annotations: annotations,
-        existingTags: tags,
-        colors: colors
+    document.addEventListener("pagesloaded", function (e) {
+        annotator.init({
+            containerElement: "#viewer",
+            annotations: annotations,
+            existingTags: tags,
+            colors: colors
+        });
+        annotator.startListening();
     });
-    annotator.startListening();
 
 });
