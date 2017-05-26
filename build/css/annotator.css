@@ -19,13 +19,13 @@
   background: #A4D7FC; }
 
 .annotation.yellow {
-  background: rgba(255, 231, 157, 0.7); }
+  background: rgba(255, 130, 5, 0.7); }
 .annotation.green {
-  background: rgba(188, 239, 170, 0.7); }
+  background: rgba(50, 239, 9, 0.7); }
 .annotation.pink {
-  background: rgba(253, 153, 187, 0.7); }
+  background: rgba(253, 0, 97, 0.7); }
 .annotation.blue {
-  background: rgba(164, 215, 252, 0.7); }
+  background: rgba(0, 36, 255, 0.7); }
 
 .temporary {
   background: #babaff; }

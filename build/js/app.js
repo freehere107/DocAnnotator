@@ -53,12 +53,14 @@ jQuery(document).ready(function ($) {
     annotator.startListening();
 
     document.addEventListener("textlayerrendered", function (event) {
-        if (event.detail.pageNumber === PDFViewerApplication.page) {
+        console.log('event.detail.pageNumber', event.detail.pageNumber);
+        console.log('PDFViewerApplication.page', PDFViewerApplication.page);
+        if (event.detail.pageNumber >= PDFViewerApplication.page) {
             console.log('Finished rendering!');
             console.log('annotations', annotations);
             annotator.renderExistingAnnotations(annotations)
         }
 
-    });
+    }, true);
 
 });

@@ -410,19 +410,13 @@ var Editor = (function Editor() {
             html += '</li>'
                 + '<li class="note-input">'
                 + '<form class="js-note-form">'
-                + '<input type="text" class="js-tags-field" placeholder="#revision, #later">'
-                + '<textarea class="js-note-field" placeholder="Add a note..."></textarea>'
-                + '<input type="submit" id="add-button" value="Add Note" />'
+                + '<input type="text" class="js-tags-field" placeholder="笔记标题">'
+                + '<textarea class="js-note-field" placeholder="笔记内容"></textarea>'
+                + '<input type="submit" id="add-button" value="添加" />'
                 + '</form>'
                 + '</li>'
-                + '<li><a href="#" class="js-copy">Copy</a></li>'
-                + '<li><span class="link">Share</span>'
-                + '<ul class="dropdown-list sub-list">'
-                + '<li class="js-facebook-share"><a href="#" class="js-share facebook">Facebook</a></li>'
-                + '<li><a href="#" class="js-share twitter">Twitter</a></li>'
-                + '</ul>'
-                + '</li>'
-                + '<li class="js-remove-annotation-wrapper"><a href="#" class="js-remove-annotation">Remove Highlight</a></li>'
+                + '<li><a href="#" class="js-copy">复制</a></li>'
+                + '<li class="js-remove-annotation-wrapper"><a href="#" class="js-remove-annotation">删掉笔记</a></li>'
                 + '</ul>'
                 + '</div>'
             ;
@@ -545,7 +539,7 @@ var Editor = (function Editor() {
 
         saveAndClose: function (data) {
             if (!data) return;
-
+            console.log('add data **********************', data);
             var params = {
                 debug: this.annotator.debug,
                 cbk: function (annotation) {
@@ -565,7 +559,7 @@ var Editor = (function Editor() {
 
                     this.hideEditor();
                 }.bind(this)
-            }
+            };
             $.extend(params, data);
             void 0;
             this.annotation.save(params);
@@ -665,18 +659,32 @@ var Editor = (function Editor() {
         saveToLocalStorage: function () {
             // save to localStorage
             if (window.localStorage) {
+                console.log('*******************8', this.annotator.annotations);
                 var serializedAnnotations = this.annotator.annotations.map(function (annotation) {
+                    console.log('annotation.serialize()', annotation.serialize());
                     return annotation.serialize();
                 });
-                console.log('data save', JSON.stringify(serializedAnnotations));
+                console.log('xxxxxxxxxxxxxxxxxx', serializedAnnotations);
+                serializedAnnotations = this.arrUnique(serializedAnnotations);
+                // console.log('data save', serializedAnnotations);
                 window.localStorage.setItem("annotations", JSON.stringify(serializedAnnotations));
             }
+        },
+        arrUnique: function (arr) {
+            var res = [];
+            var json = {};
+            for (var i = 0; i < arr.length; i++) {
+                if (!json[arr[i]['id']]) {
+                    res.push(arr[i]);
+                    json[arr[i]['id']] = 1;
+                } else {
+                    console.log('ccccccccccc', arr[i]['id'])
+                }
+            }
+            console.log(json);
+            return res;
         }
-
-
-    }
-
-
+    };
     return Editor;
 })();
 var Annotator = (function Annotator() {
