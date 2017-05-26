@@ -74,7 +74,7 @@ var Editor = (function Editor() {
                 + '<form class="js-note-form">'
                 + '<input type="text" class="js-tags-field" placeholder="#revision, #later">'
                 + '<textarea class="js-note-field" placeholder="Add a note..."></textarea>'
-                + '<input type="submit" id="add-button" value="Add Note" />'
+                + '<input type="submit" id="add-button" value="Add Note C" />'
                 + '</form>'
                 + '</li>'
                 + '<li class="js-remove-annotation-wrapper"><a href="#" class="js-remove-annotation">Remove Highlight</a></li>'
@@ -223,7 +223,7 @@ var Editor = (function Editor() {
             }
 
             $.extend(params, data);
-            console.log("文档选中的值:",this.annotation.selectedText);
+            console.log(data,"文档选中的值:",this.annotation.selectedText);
             this.annotation.save(params);
             //此部分数据与服务器发送交互
         },
@@ -259,8 +259,9 @@ var Editor = (function Editor() {
         removeAnnotation: function () {
             var annotation = this.annotation;
             var annotator = this.annotator;
-
-
+            //去除标注
+            console.log('您选中数据：',this.annotation.selectedText);
+            
             if (!annotation) return;
 
             var renderedAnnotation = $(this.annotator.containerElement)
