@@ -203,8 +203,6 @@ var Annotation = (function Annotation() {
             parentContainer = this.$parentContainer.get(0);
             startContainer = this.$startContainer.get(0);
             endContainer = this.$endContainer.get(0);
-            console.log('range.startContainer', startContainer);
-            console.log('range.startOffset', range);
             var startTextNodeParams = this.getTextNodeAtOffset(startContainer, range.startOffset);
             if (startTextNodeParams === false) {
                 return false;
@@ -263,7 +261,6 @@ var Annotation = (function Annotation() {
                         }
                     }
                 } catch (e) {
-                    console.log('xx' + e)
                     return false;
                 }
             }
@@ -555,7 +552,6 @@ var Editor = (function Editor() {
 
         saveAndClose: function (data) {
             if (!data) return;
-            console.log('add data **********************', data);
             var params = {
                 debug: this.annotator.debug,
                 cbk: function (annotation) {
@@ -679,7 +675,6 @@ var Editor = (function Editor() {
                     return annotation.serialize();
                 });
 
-                // console.log('data save', serializedAnnotations);
                 window.localStorage.setItem("annotations", JSON.stringify(serializedAnnotations));
             }
         },
@@ -771,12 +766,14 @@ var Annotator = (function Annotator() {
         },
 
         renderExistingAnnotations: function (annotations) {
+            console.log('11111111111111', this.annotations);
             for (var i = 0; i < annotations.length; i++) {
                 var annotation = Object.create(Annotation);
                 annotation.init({savedAnnotation: annotations[i], annotator: this});
                 annotation.render();
                 this.annotations.push(annotation);
             }
+            console.log('222222222222', this.annotations);
         },
 
 

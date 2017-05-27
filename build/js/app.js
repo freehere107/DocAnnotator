@@ -60,10 +60,8 @@ jQuery(document).ready(function ($) {
             console.log('Finished rendering!');
             console.log('annotations', annotations);
             annotations = arrUnique(annotations);
+            annotator.renderExistingAnnotations(annotations);
 
-            localStorage.setItem('rendering', 1);
-            localStorage.setItem('annotations', JSON.stringify(annotations));
-            annotator.renderExistingAnnotations(annotations)
         }
 
     }, true);
@@ -74,11 +72,8 @@ jQuery(document).ready(function ($) {
             if (!json[arr[i]['id']]) {
                 res.push(arr[i]);
                 json[arr[i]['id']] = 1;
-            } else {
-                console.log('ccccccccccc', arr[i]['id'])
             }
         }
-        console.log(json);
         return res;
     }
 });

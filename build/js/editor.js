@@ -262,17 +262,14 @@ var Editor = (function Editor() {
             var annotator = this.annotator;
             //去除标注
             console.log('您选中数据：', this.annotation.selectedText);
-
+            this.annotator.annotations = this.arrUnique(this.annotator.annotations);
             if (!annotation) return;
-
             var renderedAnnotation = $(this.annotator.containerElement)
                 .find(".annotation[data-id='" + annotation.id + "']");
-            console.log('remove annotation', renderedAnnotation, annotation.id);
             this.annotation.destroy(function () {
                 annotator.removeAnnotation(annotation.id);
                 renderedAnnotation.contents().unwrap();
             });
-
             if (this.annotator.debug)
                 this.saveToLocalStorage();
             this.hideEditor();
@@ -336,15 +333,11 @@ var Editor = (function Editor() {
                 if (!json[arr[i]['id']]) {
                     res.push(arr[i]);
                     json[arr[i]['id']] = 1;
-                } else {
-                    console.log('ccccccccccc', arr[i]['id'])
                 }
             }
-            console.log(json);
+
             return res;
         }
-    }
-
-
+    };
     return Editor;
 })();

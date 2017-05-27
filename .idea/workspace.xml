@@ -6,7 +6,6 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/js/annotator.js" afterPath="$PROJECT_DIR$/build/js/annotator.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/js/app.js" afterPath="$PROJECT_DIR$/build/js/app.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/js/editor.js" afterPath="$PROJECT_DIR$/build/js/editor.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pdf/viewer.html" afterPath="$PROJECT_DIR$/pdf/viewer.html" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -21,18 +20,8 @@
       <file leaf-file-name="app.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/build/js/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="560">
-              <caret line="43" column="6" lean-forward="true" selection-start-line="43" selection-start-column="6" selection-end-line="43" selection-end-column="6" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="annotator.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/build/js/annotator.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="390">
-              <caret line="680" column="0" lean-forward="false" selection-start-line="680" selection-start-column="0" selection-end-line="680" selection-end-column="0" />
+            <state relative-caret-position="1220">
+              <caret line="61" column="49" lean-forward="false" selection-start-line="61" selection-start-column="49" selection-end-line="61" selection-end-column="49" />
               <folding />
             </state>
           </provider>
@@ -41,8 +30,8 @@
       <file leaf-file-name="editor.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/build/js/editor.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="239">
-              <caret line="317" column="13" lean-forward="false" selection-start-line="317" selection-start-column="13" selection-end-line="317" selection-end-column="13" />
+            <state relative-caret-position="2059">
+              <caret line="340" column="6" lean-forward="false" selection-start-line="340" selection-start-column="6" selection-end-line="340" selection-end-column="6" />
               <folding />
             </state>
           </provider>
@@ -56,7 +45,6 @@
       <find>initCustomEvent</find>
       <find>renderContext</find>
       <find>textlayerrendered</find>
-      <find>console</find>
       <find>文档选中的值</find>
       <find>dropdown-list</find>
       <find>data save</find>
@@ -76,6 +64,9 @@
       <find>js-remove-annotation</find>
       <find>removeAnnotation</find>
       <find>saveToLocalStorage</find>
+      <find>this.annotator.annotations</find>
+      <find>this.annotations</find>
+      <find>console</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -219,7 +210,7 @@
       <workItem from="1495703347205" duration="133000" />
       <workItem from="1495763643596" duration="18347000" />
       <workItem from="1495849956833" duration="2101000" />
-      <workItem from="1495867266188" duration="4678000" />
+      <workItem from="1495867266188" duration="6236000" />
     </task>
     <task id="LOCAL-00001" summary="complete">
       <created>1495704713260</created>
@@ -242,11 +233,18 @@
       <option name="project" value="LOCAL" />
       <updated>1495867557980</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="commit">
+      <created>1495871956535</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1495871956535</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="28281000" />
+    <option name="totallyTimeSpent" value="29839000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -319,7 +317,8 @@
     <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="complete" />
     <MESSAGE value="Revert: 数据采集页面停留的时间" />
-    <option name="LAST_COMMIT_MESSAGE" value="Revert: 数据采集页面停留的时间" />
+    <MESSAGE value="commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="commit" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -435,7 +434,7 @@
         <state relative-caret-position="-19941">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="n#!!doc" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -448,26 +447,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/build/js/app.js">
+    <entry file="file://$PROJECT_DIR$/build/js/annotator.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="560">
-          <caret line="43" column="6" lean-forward="true" selection-start-line="43" selection-start-column="6" selection-end-line="43" selection-end-column="6" />
+        <state relative-caret-position="20">
+          <caret line="775" column="19" lean-forward="false" selection-start-line="775" selection-start-column="12" selection-end-line="775" selection-end-column="19" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/build/js/annotator.js">
+    <entry file="file://$PROJECT_DIR$/build/js/app.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="680" column="0" lean-forward="false" selection-start-line="680" selection-start-column="0" selection-end-line="680" selection-end-column="0" />
+        <state relative-caret-position="1220">
+          <caret line="61" column="49" lean-forward="false" selection-start-line="61" selection-start-column="49" selection-end-line="61" selection-end-column="49" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/build/js/editor.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="239">
-          <caret line="317" column="13" lean-forward="false" selection-start-line="317" selection-start-column="13" selection-end-line="317" selection-end-column="13" />
+        <state relative-caret-position="2059">
+          <caret line="340" column="6" lean-forward="false" selection-start-line="340" selection-start-column="6" selection-end-line="340" selection-end-column="6" />
           <folding />
         </state>
       </provider>
