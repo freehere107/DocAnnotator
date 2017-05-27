@@ -385,22 +385,28 @@
 <script src="../build/js/editor.js"></script>
 <script src="../build/js/app.js"></script>
 <script>
-    //window.localStorage.clear();
-    var DEFAULT_URL = "../pdf/compressed.tracemonkey-pldi-09.pdf";
-    var pdf_start_time = (new Date()).getTime();
-    window.onbeforeunload = function () {
-        //获取pdf文件的总页数
-        var page_count = PDFViewerApplication.pagesCount;
-        var arr = [];
-        var string = [];
-        arr[0] = 0;
-        for (var i = 1; i <= page_count; i++) {
-            arr[i] = localStorage.getItem(i) ? localStorage.getItem(i) : 0;
+//window.localStorage.clear();
+var DEFAULT_URL = "./compressed.tracemonkey-pldi-09.pdf";
+//页面关闭时
+window.onbeforeunload = function(){
+    //获取pdf文件的总页数
+    var page_count = PDFViewerApplication.pagesCount;
+    var arr = [];
+    var string = [];
+    var current_time = (new Date()).getTime();
+    var start_end;
+    for(var i = 0;i < page_count;i++){
+        var index = Number(i) + 1;
+        start_end = 0;
+        if(localStorage.getItem(index+"_start")){
+            start_end = Number(current_time) - Number(localStorage.getItem(index+"_start"));
         }
-        //window.localStorage.clear();//这边不能把所有的都删掉。标签存在localStorage里
-        string = JSON.stringify(arr);
-        localStorage.setItem('pdf', string);
-        //console.log('用户离开的时间:',(new Date()).getTime());
-
-    };
+        localStorage.removeItem(index+"_start");
+        arr[i] = localStorage.getItem(index) ? localStorage.getItem(index) : 0;
+        arr[i] = Number(start_end) + Number(arr[i]);
+    }
+    //window.localStorage.clear();
+    string = JSON.stringify(arr);
+    localStorage.setItem('pdf',string);
+};
 </script>
