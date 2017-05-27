@@ -72,16 +72,16 @@ var Editor = (function Editor() {
             html += '</li>'
                 + '<li class="note-input">'
                 + '<form class="js-note-form">'
-                + '<input type="text" class="js-tags-field" placeholder="#revision, #later">'
-                + '<textarea class="js-note-field" placeholder="Add a note..."></textarea>'
-                + '<input type="submit" id="add-button" value="Add Note C" />'
+                + '<input type="text" class="js-tags-field" placeholder="笔记标题">'
+                + '<textarea class="js-note-field" placeholder="笔记内容"></textarea>'
+                + '<input type="submit" id="add-button" value="添加" />'
                 + '</form>'
                 + '</li>'
-                + '<li class="js-remove-annotation-wrapper"><a href="#" class="js-remove-annotation">Remove Highlight</a></li>'
+                + '<li><a href="#" class="js-copy">复制</a></li>'
+                + '<li class="js-remove-annotation-wrapper"><a href="#" class="js-remove-annotation">删掉笔记</a></li>'
                 + '</ul>'
                 + '</div>'
             ;
-
             return html;
         },
 
@@ -223,8 +223,8 @@ var Editor = (function Editor() {
             }
 
             $.extend(params, data);
-            console.log('当前页：',PDFViewerApplication.page);
-            console.log(data,"文档选中的值:",this.annotation.selectedText);
+            console.log('当前页：', PDFViewerApplication.page);
+            console.log(data, "文档选中的值:", this.annotation.selectedText);
             this.annotation.save(params);
             //此部分数据与服务器发送交互
         },
@@ -261,13 +261,13 @@ var Editor = (function Editor() {
             var annotation = this.annotation;
             var annotator = this.annotator;
             //去除标注
-            console.log('您选中数据：',this.annotation.selectedText);
-            
+            console.log('您选中数据：', this.annotation.selectedText);
+
             if (!annotation) return;
 
             var renderedAnnotation = $(this.annotator.containerElement)
                 .find(".annotation[data-id='" + annotation.id + "']");
-
+            console.log('remove annotation', renderedAnnotation, annotation.id);
             this.annotation.destroy(function () {
                 annotator.removeAnnotation(annotation.id);
                 renderedAnnotation.contents().unwrap();
@@ -316,9 +316,7 @@ var Editor = (function Editor() {
 
                 window.open(windowURL, 'Share', opts);
             }
-
             this.hideEditor();
-
         },
 
         saveToLocalStorage: function () {
@@ -327,12 +325,24 @@ var Editor = (function Editor() {
                 var serializedAnnotations = this.annotator.annotations.map(function (annotation) {
                     return annotation.serialize();
                 });
-
+                serializedAnnotations = this.arrUnique(serializedAnnotations);
                 window.localStorage.setItem("annotations", JSON.stringify(serializedAnnotations));
             }
+        },
+        arrUnique: function (arr) {
+            var res = [];
+            var json = {};
+            for (var i = 0; i < arr.length; i++) {
+                if (!json[arr[i]['id']]) {
+                    res.push(arr[i]);
+                    json[arr[i]['id']] = 1;
+                } else {
+                    console.log('ccccccccccc', arr[i]['id'])
+                }
+            }
+            console.log(json);
+            return res;
         }
-
-
     }
 
 

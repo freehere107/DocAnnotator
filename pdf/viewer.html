@@ -386,7 +386,7 @@
 <script src="../build/js/app.js"></script>
 <script>
 //window.localStorage.clear();
-var DEFAULT_URL = "../File/testimage.pdf";
+var DEFAULT_URL = "./compressed.tracemonkey-pldi-09.pdf";
 //页面关闭时
 window.onbeforeunload = function(){
     //获取pdf文件的总页数
@@ -405,7 +405,7 @@ window.onbeforeunload = function(){
         arr[i] = localStorage.getItem(index) ? localStorage.getItem(index) : 0;
         arr[i] = Number(start_end) + Number(arr[i]);
     }
-    window.localStorage.clear();
+    //window.localStorage.clear();
     string = JSON.stringify(arr);
     localStorage.setItem('pdf',string);
 };
