@@ -203,8 +203,12 @@ var Annotation = (function Annotation() {
             parentContainer = this.$parentContainer.get(0);
             startContainer = this.$startContainer.get(0);
             endContainer = this.$endContainer.get(0);
-
+            console.log('range.startContainer', startContainer);
+            console.log('range.startOffset', range);
             var startTextNodeParams = this.getTextNodeAtOffset(startContainer, range.startOffset);
+            if (startTextNodeParams === false) {
+                return false;
+            }
             endTextNodeParams = this.getTextNodeAtOffset(endContainer, range.endOffset);
 
             var startTextNode = startTextNodeParams[0],
@@ -214,7 +218,11 @@ var Annotation = (function Annotation() {
 
 
             if (startTextNode == endTextNode) {
-                var startTextNodeSplit = startTextNode.splitText(startOffset);
+                try {
+                    var startTextNodeSplit = startTextNode.splitText(startOffset);
+                } catch (e) {
+                    return false;
+                }
                 var endTextNodeSplit = startTextNodeSplit.splitText(endOffset - startOffset);
             } else {
                 var startTextNodeSplit = startTextNode.splitText(startOffset);
@@ -239,19 +247,24 @@ var Annotation = (function Annotation() {
                 found = false;
 
             function getTextNodes(node) {
-                if (node.nodeType == Node.TEXT_NODE && !/^\s*$/.test(node.nodeValue)) {
-                    if (found != true) {
-                        if (count + node.nodeValue.length >= offset) {
-                            textNode = node;
-                            found = true;
-                        } else {
-                            count += node.nodeValue.length
+                try {
+                    if (node.nodeType == Node.TEXT_NODE && !/^\s*$/.test(node.nodeValue)) {
+                        if (found != true) {
+                            if (count + node.nodeValue.length >= offset) {
+                                textNode = node;
+                                found = true;
+                            } else {
+                                count += node.nodeValue.length
+                            }
+                        }
+                    } else if (node.nodeType == Node.ELEMENT_NODE) {
+                        for (var i = 0, len = node.childNodes.length; i < len; ++i) {
+                            getTextNodes(node.childNodes[i]);
                         }
                     }
-                } else if (node.nodeType == Node.ELEMENT_NODE) {
-                    for (var i = 0, len = node.childNodes.length; i < len; ++i) {
-                        getTextNodes(node.childNodes[i]);
-                    }
+                } catch (e) {
+                    console.log('xx' + e)
+                    return false;
                 }
             }
 
@@ -289,6 +302,9 @@ var Annotation = (function Annotation() {
 
         wrapNodes: function (temporary) {
             var nodes = this.getContainedNodes();
+            if (nodes === false) {
+                return false;
+            }
             var newNode = this.createWrapperElement(temporary)
             for (var i = 0; i < nodes.length; i++) {
                 $(nodes[i]).wrap(newNode);
@@ -659,31 +675,15 @@ var Editor = (function Editor() {
         saveToLocalStorage: function () {
             // save to localStorage
             if (window.localStorage) {
-                console.log('*******************8', this.annotator.annotations);
                 var serializedAnnotations = this.annotator.annotations.map(function (annotation) {
-                    console.log('annotation.serialize()', annotation.serialize());
                     return annotation.serialize();
                 });
-                console.log('xxxxxxxxxxxxxxxxxx', serializedAnnotations);
-                serializedAnnotations = this.arrUnique(serializedAnnotations);
+
                 // console.log('data save', serializedAnnotations);
                 window.localStorage.setItem("annotations", JSON.stringify(serializedAnnotations));
             }
         },
-        arrUnique: function (arr) {
-            var res = [];
-            var json = {};
-            for (var i = 0; i < arr.length; i++) {
-                if (!json[arr[i]['id']]) {
-                    res.push(arr[i]);
-                    json[arr[i]['id']] = 1;
-                } else {
-                    console.log('ccccccccccc', arr[i]['id'])
-                }
-            }
-            console.log(json);
-            return res;
-        }
+
     };
     return Editor;
 })();
