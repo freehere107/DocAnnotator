@@ -385,5 +385,22 @@
 <script src="../build/js/editor.js"></script>
 <script src="../build/js/app.js"></script>
 <script>
-    var DEFAULT_URL = 'compressed.tracemonkey-pldi-09.pdf';
+//window.localStorage.clear();
+var DEFAULT_URL = "../File/compressed.tracemonkey-pldi-09.pdf";
+var pdf_start_time = (new Date()).getTime();
+window.onbeforeunload = function(){
+    //获取pdf文件的总页数
+    var page_count = PDFViewerApplication.pagesCount;
+    var arr = [];
+    var string = [];
+    arr[0] = 0;
+    for(var i = 1;i <= page_count;i++){
+        arr[i] = localStorage.getItem(i) ? localStorage.getItem(i) : 0;
+    }
+    window.localStorage.clear();
+    string = JSON.stringify(arr);
+    localStorage.setItem('pdf',string);
+    //console.log('用户离开的时间:',(new Date()).getTime());
+
+};
 </script>

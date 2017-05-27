@@ -7229,11 +7229,11 @@ var PDFViewerApplication = {
       self.metadata = metadata;
 
       // Provides some basic debug information
-      console.log('PDF ' + pdfDocument.fingerprint + ' [' +
-                  info.PDFFormatVersion + ' ' + (info.Producer || '-').trim() +
-                  ' / ' + (info.Creator || '-').trim() + ']' +
-                  ' (PDF.js: ' + (PDFJS.version || '-') +
-                  (!PDFJS.disableWebGL ? ' [WebGL]' : '') + ')');
+      // console.log('PDF ' + pdfDocument.fingerprint + ' [' +
+      //             info.PDFFormatVersion + ' ' + (info.Producer || '-').trim() +
+      //             ' / ' + (info.Creator || '-').trim() + ']' +
+      //             ' (PDF.js: ' + (PDFJS.version || '-') +
+      //             (!PDFJS.disableWebGL ? ' [WebGL]' : '') + ')');
 
       var pdfTitle;
       if (metadata && metadata.has('dc:title')) {
@@ -7923,6 +7923,12 @@ window.addEventListener('scalechange', function scalechange(evt) {
 window.addEventListener('pagechange', function pagechange(evt) {
   var page = evt.pageNumber;
   if (evt.previousPageNumber !== page) {
+    //记录上一页的结束时间
+    setPdfPageTime(evt.previousPageNumber+"_end");
+    //记录下一页的开始时间
+    setPdfPageTime(page+"_start");
+    //计算页面的停留时间
+    getPdfPageTime(evt.previousPageNumber);
     document.getElementById('pageNumber').value = page;
 
     if (PDFViewerApplication.pdfSidebar.isThumbnailViewVisible) {
@@ -8238,6 +8244,29 @@ window.addEventListener('keydown', function keydown(evt) {
   }
 });
 
+
+function getPdfPageTime(key) {
+    //获取页面结束的时间
+    var end_time = localStorage.getItem(key+"_end");
+    var start_time = localStorage.getItem(key+"_start");
+    if(!start_time){
+        start_time = pdf_start_time;
+    }
+    //时间差
+    var start_end = Number(end_time) - Number(start_time);
+    if(localStorage.getItem(key)){
+        start_end = Number(start_end) + Number(localStorage.getItem(key));
+    }
+    window.localStorage.removeItem(key+"_end");
+    window.localStorage.removeItem(key+"_start");
+    localStorage.setItem(key,start_end);
+}
+
+function setPdfPageTime(key) {
+  if(window.localStorage){
+    localStorage.setItem(key,(new Date()).getTime());
+  }
+}
 window.addEventListener('beforeprint', function beforePrint(evt) {
   PDFViewerApplication.beforePrint();
 });
