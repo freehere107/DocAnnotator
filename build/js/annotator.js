@@ -766,14 +766,13 @@ var Annotator = (function Annotator() {
         },
 
         renderExistingAnnotations: function (annotations) {
-            console.log('11111111111111', this.annotations);
             for (var i = 0; i < annotations.length; i++) {
                 var annotation = Object.create(Annotation);
                 annotation.init({savedAnnotation: annotations[i], annotator: this});
                 annotation.render();
                 this.annotations.push(annotation);
             }
-            console.log('222222222222', this.annotations);
+            this.annotations = Editor.arrUnique(this.annotations);
         },
 
 
