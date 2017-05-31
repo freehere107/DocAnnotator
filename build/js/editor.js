@@ -226,7 +226,6 @@ var Editor = (function Editor() {
             console.log('当前页：', PDFViewerApplication.page);
             console.log(data, "文档选中的值:", this.annotation.selectedText);
             this.annotation.save(params);
-            //此部分数据与服务器发送交互
         },
 
         copyToClipboard: function () {
