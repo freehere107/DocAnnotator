@@ -39,10 +39,9 @@ var Annotation = (function Annotation() {
         },
 
         setRangeElements: function () {
-            this.$parentContainer = $(this.annotator.findElementByXPath(this.range.parentContainerXPath));
-            this.$startContainer = $(this.annotator.findElementByXPath(this.range.startContainerXPath));
-            this.$endContainer = $(this.annotator.findElementByXPath(this.range.endContainerXPath));
-
+            this.$parentContainer = this.annotator.findElementByJQuery(this.range.parentContainerXPath);
+            this.$startContainer = this.annotator.findElementByJQuery(this.range.startContainerXPath);
+            this.$endContainer = this.annotator.findElementByJQuery(this.range.endContainerXPath);
         },
 
         render: function (opts) {
@@ -200,15 +199,14 @@ var Annotation = (function Annotation() {
 
             range = this.range;
 
-            parentContainer = this.$parentContainer.get(0);
-            startContainer = this.$startContainer.get(0);
-            endContainer = this.$endContainer.get(0);
+            parentContainer = this.$parentContainer[0];
+            startContainer = this.$startContainer[0];
+            endContainer = this.$endContainer[0];
             var startTextNodeParams = this.getTextNodeAtOffset(startContainer, range.startOffset);
             if (startTextNodeParams === false) {
                 return false;
             }
             endTextNodeParams = this.getTextNodeAtOffset(endContainer, range.endOffset);
-
             var startTextNode = startTextNodeParams[0],
                 startOffset = startTextNodeParams[1],
                 endTextNode = endTextNodeParams[0],
@@ -229,7 +227,6 @@ var Annotation = (function Annotation() {
 
 
             var innerNodes = this.getNodesToWrap(parentContainer, startTextNodeSplit, endTextNodeSplit);
-
 
             for (var i = 0; i < innerNodes.length; i++) {
                 nodes.push(innerNodes[i]);
@@ -408,15 +405,15 @@ var Editor = (function Editor() {
 
         renderEditorTemplate: function () {
             var html = '<div id="annotation-editor">'
-                + '<ul class="dropdown-list">'
-                + '<li class="colors">'
-            ;
+                    + '<ul class="dropdown-list">'
+                    + '<li class="colors">'
+                ;
 
             this.annotator.colors.forEach(function (color, index) {
                 var className = 'js-color-picker color'
-                    + ' ' + color.className
-                    + ' ' + (index == 0 ? 'active' : '')
-                ;
+                        + ' ' + color.className
+                        + ' ' + (index == 0 ? 'active' : '')
+                    ;
                 html += '<span data-color="' + color.className + '" class="' + className + '"></span>';
             });
 
@@ -861,6 +858,17 @@ var Annotator = (function Annotator() {
             return result.singleNodeValue;
         },
 
+        findElementByJQuery: function (path) {
+            var path_arr = path.split(' ');
+            if (!isNaN(path_arr[path_arr.length - 1])) {
+                var last = path_arr.splice(-1);
+                path = path_arr.join(' ');
+                return $(path).eq(last - 1);
+            } else {
+                return $(path);
+            }
+        },
+
         createXPathFromElement: function (elm) {
             var allNodes = document.getElementsByTagName('*');
 
@@ -871,28 +879,24 @@ var Annotator = (function Annotator() {
                         if (allNodes[n].hasAttribute('id') && allNodes[n].id == elm.id) uniqueIdCount++;
                         if (uniqueIdCount > 1) break;
                     }
-                    ;
-
                     if (uniqueIdCount == 1) {
-                        segs.unshift('id("' + elm.getAttribute('id') + '")');
-                        return segs.join('/');
+                        segs.unshift('#' + elm.getAttribute('id'));
+                        return segs.join(' ');
                     } else {
-                        segs.unshift(elm.localName.toLowerCase() + '[@id="' + elm.getAttribute('id') + '"]');
+                        segs.unshift(elm.localName.toLowerCase() + '#' + elm.getAttribute('id'));
                     }
 
                 } else if (elm.hasAttribute('class')) {
-                    segs.unshift(elm.localName.toLowerCase() + '[@class="' + elm.getAttribute('class') + '"]');
+                    segs.unshift(elm.localName.toLowerCase() + '.' + elm.getAttribute('class'));
                 } else {
                     for (i = 1, sib = elm.previousSibling; sib; sib = sib.previousSibling) {
                         if (sib.localName == elm.localName) i++;
                     }
-                    ;
-                    segs.unshift(elm.localName.toLowerCase() + '[' + i + ']');
+                    segs.unshift(elm.localName.toLowerCase() + ' ' + i);
                 }
-                ;
             }
 
-            return segs.length ? '' + segs.join('/') : null;
+            return segs.length ? '' + segs.join(' ') : null;
         }
 
     };
