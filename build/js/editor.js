@@ -57,23 +57,23 @@ var Editor = (function Editor() {
 
         renderEditorTemplate: function () {
             var html = '<div id="annotation-editor">'
-                + '<ul class="dropdown-list">'
-                + '<li class="colors">'
-            ;
+                    + '<ul class="dropdown-list">'
+                    + '<li class="colors">'
+                ;
 
             this.annotator.colors.forEach(function (color, index) {
                 var className = 'js-color-picker color'
-                    + ' ' + color.className
-                    + ' ' + (index == 0 ? 'active' : '')
-                ;
+                        + ' ' + color.className
+                        + ' ' + (index == 0 ? 'active' : '')
+                    ;
                 html += '<span data-color="' + color.className + '" class="' + className + '"></span>';
             });
 
             html += '</li>'
                 + '<li class="note-input">'
                 + '<form class="js-note-form">'
-                + '<input type="text" class="js-tags-field" placeholder="笔记标题">'
-                + '<textarea class="js-note-field" placeholder="笔记内容"></textarea>'
+                + '<input type="text" class="js-tags-field annotation_title" placeholder="笔记标题">'
+                + '<textarea class="js-note-field annotation_content" placeholder="笔记内容"></textarea>'
                 + '<input type="submit" id="add-button" value="添加" />'
                 + '</form>'
                 + '</li>'
@@ -336,7 +336,8 @@ var Editor = (function Editor() {
             }
 
             return res;
-        }
+        },
+
     };
     return Editor;
 })();

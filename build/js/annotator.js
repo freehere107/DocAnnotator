@@ -886,7 +886,7 @@ var Annotator = (function Annotator() {
                         segs.unshift(elm.localName.toLowerCase() + '#' + elm.getAttribute('id'));
                     }
 
-                } else if (elm.hasAttribute('class')) {
+                } else if (elm.hasAttribute('class') && elm.getAttribute('class') !== '') {
                     segs.unshift(elm.localName.toLowerCase() + '.' + elm.getAttribute('class'));
                 } else {
                     for (i = 1, sib = elm.previousSibling; sib; sib = sib.previousSibling) {
@@ -895,7 +895,6 @@ var Annotator = (function Annotator() {
                     segs.unshift(elm.localName.toLowerCase() + ' ' + i);
                 }
             }
-
             return segs.length ? '' + segs.join(' ') : null;
         }
 
