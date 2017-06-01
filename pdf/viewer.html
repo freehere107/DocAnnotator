@@ -379,45 +379,4 @@ See https://github.com/adobe-type-tools/cmap-resources
   };
   </script>
 </html>
-<<<<<<< HEAD
 
-=======
-<script src="l10n.js"></script>
-<script src="../build/pdf.js"></script>
-<script src="viewer.js"></script>
-<script src="../build/js/jquery.min.js"></script>
-<script src="../build/js/vendor/awesomplete.min.js"></script>
-<script src="../build/js/annotation.js"></script>
-<script src="../build/js/annotator.js"></script>
-<script src="../build/js/editor.js"></script>
-<script src="../build/js/app.js"></script>
-<script>
-// http://mooc-2017.mtts.cc/2017/06/01/09/24/49/5324/o_1bhgk3129v141t556iu1krj671k.pdf
-//window.localStorage.clear();
-console.log(localStorage.getItem('pdf'));
-var DEFAULT_URL = "http://mooc-2017.mtts.cc/2017/06/01/09/24/49/5324/o_1bhgk3129v141t556iu1krj671k.pdf";
-//var DEFAULT_URL = "../File/testimage.pdf"
-//页面关闭时
-window.onbeforeunload = function(){
-    //获取pdf文件的总页数
-    var page_count = PDFViewerApplication.pagesCount;
-    var arr = [];
-    var string = [];
-    var current_time = (new Date()).getTime();
-    var start_end;
-    for(var i = 0;i < page_count;i++){
-        var index = Number(i) + 1;
-        start_end = 0;
-        if(localStorage.getItem(index+"_start")){
-            start_end = Number(current_time) - Number(localStorage.getItem(index+"_start"));
-        }
-        localStorage.removeItem(index+"_start");
-        arr[i] = localStorage.getItem(index) ? localStorage.getItem(index) : 0;
-        arr[i] = Number(start_end) + Number(arr[i]);
-    }
-    window.localStorage.clear();
-    string = JSON.stringify(arr);
-    localStorage.setItem('pdf',string);
-};
-</script>
->>>>>>> b7cd80b3f1895188d1ae9f9ed3e2f98b464b7f2b
