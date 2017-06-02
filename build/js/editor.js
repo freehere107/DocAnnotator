@@ -223,8 +223,6 @@ var Editor = (function Editor() {
             }
 
             $.extend(params, data);
-            console.log('当前页：', PDFViewerApplication.page);
-            console.log(data, "文档选中的值:", this.annotation.selectedText);
             this.annotation.save(params);
         },
 
