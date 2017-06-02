@@ -405,15 +405,15 @@ var Editor = (function Editor() {
 
         renderEditorTemplate: function () {
             var html = '<div id="annotation-editor">'
-                    + '<ul class="dropdown-list">'
-                    + '<li class="colors">'
-                ;
+                + '<ul class="dropdown-list">'
+                + '<li class="colors">'
+            ;
 
             this.annotator.colors.forEach(function (color, index) {
                 var className = 'js-color-picker color'
-                        + ' ' + color.className
-                        + ' ' + (index == 0 ? 'active' : '')
-                    ;
+                    + ' ' + color.className
+                    + ' ' + (index == 0 ? 'active' : '')
+                ;
                 html += '<span data-color="' + color.className + '" class="' + className + '"></span>';
             });
 
@@ -432,45 +432,6 @@ var Editor = (function Editor() {
             ;
 
             return html;
-        },
-
-        showEditor: function (opts) {
-            var $popover = this.$popoverElement;
-
-            var position = opts.position,
-                annotation = opts.annotation,
-                temporary = opts.temporary;
-
-            var top = position.top - 30;
-            var left = position.left - this.$popoverElement.width() / 2;
-
-            if (annotation) {
-                this.annotation = annotation;
-                this.activateAnnotationColor();
-                this.renderContents();
-
-                if (!temporary) {
-                    this.showRemoveBtn();
-                }
-            }
-
-            // FB Share
-            if (!(window.FB)) this.$popoverElement.find(".js-facebook-share").hide();
-            else {
-                this.$popoverElement.find(".js-facebook-share").show();
-            }
-
-
-            if (temporary) {
-                this.annotation.render({temporary: true});
-            }
-
-            if (this._awesomplete) {
-                this._awesomplete.list = this.annotator.tags;
-            }
-
-            $popover.removeClass("anim").css("top", top).css("left", left).show();
-            $popover.find("#annotation-input").focus();
         },
 
         isVisible: function () {

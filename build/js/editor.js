@@ -57,15 +57,15 @@ var Editor = (function Editor() {
 
         renderEditorTemplate: function () {
             var html = '<div id="annotation-editor">'
-                    + '<ul class="dropdown-list">'
-                    + '<li class="colors">'
-                ;
+                + '<ul class="dropdown-list">'
+                + '<li class="colors">'
+            ;
 
             this.annotator.colors.forEach(function (color, index) {
                 var className = 'js-color-picker color'
-                        + ' ' + color.className
-                        + ' ' + (index == 0 ? 'active' : '')
-                    ;
+                    + ' ' + color.className
+                    + ' ' + (index == 0 ? 'active' : '')
+                ;
                 html += '<span data-color="' + color.className + '" class="' + className + '"></span>';
             });
 
@@ -119,7 +119,7 @@ var Editor = (function Editor() {
             if (this._awesomplete) {
                 this._awesomplete.list = this.annotator.tags;
             }
-
+            console.log('showEditor top..........', top, 'left...........', left);
             $popover.removeClass("anim").css("top", top).css("left", left).show();
             $popover.find("#annotation-input").focus();
         },
