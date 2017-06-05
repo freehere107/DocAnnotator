@@ -59,21 +59,8 @@ jQuery(document).ready(function ($) {
         if (event.detail.pageNumber >= PDFViewerApplication.page || rendering === 0) {
             console.log('Finished rendering!');
             console.log('annotations', annotations);
-            annotations = arrUnique(annotations);
+            annotations = Editor.arrUnique(annotations);
             annotator.renderExistingAnnotations(annotations);
-
         }
-
     }, true);
-    var arrUnique = function (arr) {
-        var res = [];
-        var json = {};
-        for (var i = 0; i < arr.length; i++) {
-            if (!json[arr[i]['id']]) {
-                res.push(arr[i]);
-                json[arr[i]['id']] = 1;
-            }
-        }
-        return res;
-    }
 });

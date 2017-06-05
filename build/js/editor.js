@@ -220,7 +220,7 @@ var Editor = (function Editor() {
 
                     this.hideEditor();
                 }.bind(this)
-            }
+            };
 
             $.extend(params, data);
             this.annotation.save(params);
@@ -334,8 +334,7 @@ var Editor = (function Editor() {
             }
 
             return res;
-        },
-
+        }
     };
     return Editor;
 })();

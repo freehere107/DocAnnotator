@@ -811,6 +811,10 @@ var Annotator = (function Annotator() {
                 self.handleAnnotationClick(e);
             });
 
+            //todo 标记整页
+            document.getElementById("viewer").addEventListener("click", function () {
+                console.log('is pdf viewer', PDFViewerApplication.page);
+            });
         },
 
         findElementByXPath: function (path) {
